@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <Authors>Bootleg Realists</Authors>
+		<CodeAnalysisRuleSet>Roslynator.ruleset</CodeAnalysisRuleSet>
+        <Company>Bootleg Realists</Company>
+        <Description>DocxToPdf is a class library for converting a Word document (*.docx) to a PDF document (*.pdf)</Description>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>latest</LangVersion>
+		<NoWarn>CA1416,NU1608</NoWarn>
+        <Nullable>enable</Nullable>
+        <PackageId>BootlegRealists.DocxToPdf</PackageId>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/bootleg-realists/docxtopdf</RepositoryUrl>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Version>0.5</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <None Remove=".gitignore" />
+        <None Include="README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Clippit" Version="1.10.2"/>
+        <PackageReference Include="DocumentFormat.OpenXml" Version="2.16.0"/>
+        <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.8.0"/>
+        <PackageReference Include="System.Drawing.Common" Version="6.0.0"/>
+        <PackageReference Include="WycliffeAssociates.Typography.OpenFont" Version="1.0.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="libgdiplus.dylib" PackagePath="runtimes/osx-arm64/native/"/>
+    </ItemGroup>
+</Project>

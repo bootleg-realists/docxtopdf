@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="roslynator.ruleset" ToolsVersion="16.0">
+  <!-- Specify default action that should be applied to all analyzers except those explicitly specified. -->
+  <!-- <IncludeAll Action="None,Hidden,Info,Warning,Error" /> -->
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <!-- Specify default action that should be applied to a specified analyzer. -->
+    <!-- <Rule Id="RCSxxxx" Action="None,Hidden,Info,Warning,Error" /> -->
+    <Rule Id="RCS1001" Action="None" />
+    <Rule Id="RCS1003" Action="None" />
+    <Rule Id="RCS1018" Action="None" />
+    <Rule Id="RCS1029" Action="None" />
+    <Rule Id="RCS1080" Action="None" />
+    <Rule Id="RCS1159" Action="None" />
+    <Rule Id="RCS1187" Action="None" />
+    <Rule Id="RCS1175" Action="None" />
+    <Rule Id="RCS1212" Action="None" />
+    <Rule Id="RCS1179" Action="None" />
+    <Rule Id="RCS1213" Action="None" />
+    <Rule Id="RCS1036" Action="None" />
+    <Rule Id="RCS1037" Action="None" />
+    <Rule Id="RCS1057" Action="None" />
+    <Rule Id="RCS1123" Action="None" />
+    <Rule Id="RCS1163" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeAnalysis.CSharp.Features" RuleNamespace="Microsoft.CodeAnalysis.CSharp.Features">
+    <Rule Id="IDE0008" Action="None" />
+    <Rule Id="IDE0011" Action="None" />
+    <Rule Id="IDE0022" Action="None" />
+    <Rule Id="IDE0040" Action="None" />
+    <Rule Id="IDE0051" Action="None" />
+    <Rule Id="IDE0060" Action="None" />
+  </Rules>
+</RuleSet>
