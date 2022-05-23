@@ -101,10 +101,16 @@ public class PdfPageEventHelperEx : PdfPageEventHelper
 
 		var cb = writer.DirectContentUnder;
 		var indentLeft = paragraph.FirstLineIndent + paragraph.IndentationLeft;
-		var paragraphFontSize = paragraph.GetCalculatedFont()?.CalculatedSize ?? 16.0f;
-		var leadingMinusFontSize = paragraph.TotalLeading - paragraphFontSize;
+		var descentHeight = 0.0f;
+		var calcFont = paragraph.GetCalculatedFont();
+		if (calcFont != null && calcFont.BaseFont != null)
+		{
+			var paragraphFontSize = calcFont.CalculatedSize;
+			descentHeight = 0.0f - calcFont.BaseFont.GetFontDescriptor(BaseFont.DESCENT, paragraphFontSize);
+		}
+
 		var x = document.Left + indentLeft;
-		var y = paragraphPosition + paragraph.SpacingAfter - leadingMinusFontSize;
+		var y = paragraphPosition + paragraph.SpacingAfter - descentHeight;
 		var w = document.Right - document.Left - indentLeft - paragraph.IndentationRight;
 		var h = startPosition - paragraphPosition - (paragraph.SpacingBefore + paragraph.SpacingAfter);
 		cb.Rectangle(x, y, w, h);
