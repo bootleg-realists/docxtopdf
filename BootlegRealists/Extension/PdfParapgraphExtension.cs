@@ -82,9 +82,9 @@ public static class PdfParagraphExtension
 	public static void ProcessTabs(this Paragraph paragraph)
 	{
 		var offset = 0.0f;
-		foreach (var item in paragraph.Chunks)
+		for (var i = 0; i < paragraph.Chunks.Count; i++)
 		{
-			if (item is not Chunk chunk || !chunk.GetTabSettings(out var separator, out var tabPosition, out var newLine, out var adjustLeft))
+			if (paragraph.Chunks[i] is not Chunk chunk || !chunk.GetTabSettings(out var separator, out var tabPosition, out var newLine, out var adjustLeft))
 				continue;
 			tabPosition += offset;
 			chunk.SetTabSettings(separator, tabPosition, newLine, adjustLeft);

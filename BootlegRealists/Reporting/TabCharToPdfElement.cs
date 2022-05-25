@@ -22,6 +22,6 @@ public class TabCharToPdfElement : XmlToPdfElement<Drawing>
 		if (element is not TabChar) return new List<IElement>();
 
 		var defaultTabStop = SourceDocument.MainDocumentPart?.DocumentSettingsPart?.Settings.Descendants<DefaultTabStop>().FirstOrDefault()?.Val?.Value ?? 720.0f;
-		return new List<IElement> {new Chunk(new VerticalPositionMark(), Converter.TwipToPoint(defaultTabStop), false)};
+		return new List<IElement> {new Chunk(new VerticalPositionMark(), Converter.TwipToPoint(defaultTabStop), true)};
 	}
 }
