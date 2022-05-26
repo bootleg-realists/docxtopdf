@@ -27,14 +27,12 @@ public class SpaceChunk : Chunk
         /// <param name="c">the content</param>
 		public SpaceChunk(char c): base(c) {}
         /// <summary>
-        /// Creates a separator Chunk. Note that separator chunks can't be used in combination
-		//     with tab chunks! @since 2.1.2
+        /// Creates a separator Chunk. Note that separator chunks can't be used in combination  with tab chunks! @since 2.1.2
         /// </summary>
         /// <param name="separator">the drawInterface to use to draw the separator.</param>
 		public SpaceChunk(IDrawInterface separator): base(separator) {}
         /// <summary>
-        /// Creates a tab Chunk. Note that separator chunks can't be used in combination
-		//     with tab chunks! @since 2.1.2
+        /// Creates a tab Chunk. Note that separator chunks can't be used in combination  with tab chunks! @since 2.1.2
         /// </summary>
         /// <param name="separator">the drawInterface to use to draw the tab.</param>
         /// <param name="tabPosition">an X coordinate that will be used as start position for the next Chunk.</param>
@@ -52,8 +50,7 @@ public class SpaceChunk : Chunk
         /// <param name="font">the font</param>
 		public SpaceChunk(char c, Font font): base(c, font) {}
         /// <summary>
-        /// Creates a separator Chunk. Note that separator chunks can't be used in combination
-		//     with tab chunks! @since 2.1.2
+        /// Creates a separator Chunk. Note that separator chunks can't be used in combination with tab chunks! @since 2.1.2
         /// </summary>
         /// <param name="separator">the drawInterface to use to draw the separator.</param>
         /// <param name="vertical">true if this is a vertical separator</param>
@@ -66,8 +63,7 @@ public class SpaceChunk : Chunk
         /// <param name="offsetY">the image offset in the y direction</param>
 		public SpaceChunk(Image image, float offsetX, float offsetY): base(image, offsetX, offsetY) {}
         /// <summary>
-        /// Creates a tab Chunk. Note that separator chunks can't be used in combination
-		//     with tab chunks! @since 2.1.2
+        /// Creates a tab Chunk. Note that separator chunks can't be used in combination with tab chunks! @since 2.1.2
         /// </summary>
         /// <param name="separator">the drawInterface to use to draw the tab.</param>
         /// <param name="tabPosition">an X coordinate that will be used as start position for the next Chunk.</param>
