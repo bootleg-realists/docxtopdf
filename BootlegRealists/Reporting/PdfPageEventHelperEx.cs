@@ -103,7 +103,7 @@ public class PdfPageEventHelperEx : PdfPageEventHelper
 		var indentLeft = paragraph.FirstLineIndent + paragraph.IndentationLeft;
 		var descentHeight = 0.0f;
 		var calcFont = paragraph.GetCalculatedFont();
-		if (calcFont != null && calcFont.BaseFont != null)
+		if (calcFont?.BaseFont != null)
 		{
 			var paragraphFontSize = calcFont.CalculatedSize;
 			descentHeight = 0.0f - calcFont.BaseFont.GetFontDescriptor(BaseFont.DESCENT, paragraphFontSize);

@@ -14,15 +14,14 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <RepositoryUrl>https://github.com/bootleg-realists/docxtopdf</RepositoryUrl>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <Version>1.0.0</Version>
+        <Version>1.0.1</Version>
     </PropertyGroup>
     <ItemGroup>
         <None Remove=".gitignore" />
         <None Include="README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Clippit" Version="1.10.2"/>
-        <PackageReference Include="DocumentFormat.OpenXml" Version="2.16.0"/>
+        <PackageReference Include="DocumentFormat.OpenXml" Version="2.17.1"/>
         <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.8.0"/>
         <PackageReference Include="System.Drawing.Common" Version="6.0.0"/>
         <PackageReference Include="WycliffeAssociates.Typography.OpenFont" Version="1.0.0"/>
