@@ -470,24 +470,22 @@ public class TableHelper : IEnumerable
 		var autoWidth = false;
 		var tableWidth = table.GetEffectiveElement<TableWidth>();
 		if (tableWidth?.Type != null)
-			switch (tableWidth.Type.Value)
+			if (tableWidth.Type.Value == TableWidthUnitValues.Dxa)
 			{
-				default:
-					autoWidth = true;
-					break;
-				case TableWidthUnitValues.Dxa:
-					if (tableWidth.Width != null) totalWidth = Converter.TwipToPoint(tableWidth.Width.Value ?? "");
-
-					break;
-				case TableWidthUnitValues.Pct:
-					if (tableWidth.Width != null)
-						totalWidth = printablePageWidth * Tools.Percentage(tableWidth.Width.Value ?? "");
-
-					//if (table.Parent.GetType() == typeof(Wordprocessing.Body))
-					//    totalWidth = (float)((pdfDoc.PageSize.Width - pdfDoc.LeftMargin - pdfDoc.RightMargin) * percentage(tableWidth.Width.Value));
-					//else
-					//    totalWidth = this.getCellWidth(table.Parent as Wordprocessing.TableCell) * percentage(tableWidth.Width.Value);
-					break;
+				if (tableWidth.Width != null) totalWidth = Converter.TwipToPoint(tableWidth.Width.Value ?? "");
+			}
+			else if (tableWidth.Type.Value == TableWidthUnitValues.Pct)
+			{
+				if (tableWidth.Width != null)
+					totalWidth = printablePageWidth * Tools.Percentage(tableWidth.Width.Value ?? "");
+				//if (table.Parent.GetType() == typeof(Wordprocessing.Body))
+				//    totalWidth = (float)((pdfDoc.PageSize.Width - pdfDoc.LeftMargin - pdfDoc.RightMargin) * percentage(tableWidth.Width.Value));
+				//else
+				//    totalWidth = this.getCellWidth(table.Parent as Wordprocessing.TableCell) * percentage(tableWidth.Width.Value);
+			}
+			else
+			{
+				autoWidth = true;
 			}
 
 		if (!autoWidth)
@@ -555,25 +553,23 @@ public class TableHelper : IEnumerable
 				var cellWidth = cellsInRow[j].Cell?.GetEffectiveElement<TableCellWidth>();
 				if (cellWidth?.Type != null)
 				{
-					switch (cellWidth.Type.Value)
+					if (cellWidth.Type.Value == TableWidthUnitValues.Auto)
 					{
-						case TableWidthUnitValues.Auto:
-							//// TODO: calculate the items width
-							//if (cellsInRow[j].elements.Count > 0)
-							//{
-							//    Text.IElement element = cellsInRow[j].elements[0];
-							//}
-							break;
-						case TableWidthUnitValues.Dxa:
-							if (cellWidth.Width != null)
-								reqCellWidth = Converter.TwipToPoint(cellWidth.Width.Value ?? "");
-
-							break;
-						case TableWidthUnitValues.Pct:
-							if (cellWidth.Width != null)
-								reqCellWidth = Tools.Percentage(cellWidth.Width.Value ?? "") * totalWidth;
-
-							break;
+						//// TODO: calculate the items width
+						//if (cellsInRow[j].elements.Count > 0)
+						//{
+						//    Text.IElement element = cellsInRow[j].elements[0];
+						//}
+					}
+					else if (cellWidth.Type.Value == TableWidthUnitValues.Dxa)
+					{
+						if (cellWidth.Width != null)
+							reqCellWidth = Converter.TwipToPoint(cellWidth.Width.Value ?? "");
+					}
+					else if (cellWidth.Type.Value == TableWidthUnitValues.Pct)
+					{
+						if (cellWidth.Width != null)
+							reqCellWidth = Tools.Percentage(cellWidth.Width.Value ?? "") * totalWidth;
 					}
 				}
 

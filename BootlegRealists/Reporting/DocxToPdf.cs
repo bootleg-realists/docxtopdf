@@ -21,7 +21,7 @@ public partial class DocxToPdf : DocxToReportConverter
 	static DocxToPdf() => AppContext.SetSwitch("System.Drawing.EnableUnixSupport", true);
 
 	CounterHelper counterHelper = new();
-	WordprocessingDocument docxDocument = new WordprocessingDocumentEx();
+	WordprocessingDocument docxDocument = WordprocessingDocumentEx.CreateEmpty();
 	Text.DocumentEx pdfDocument = new();
 
 	/// <inheritdoc />
@@ -138,21 +138,21 @@ public partial class DocxToPdf : DocxToReportConverter
 
 		if (space?.LineRule != null && space.Line != null && space.LineRule.HasValue && space.Line.HasValue)
 		{
-			switch (space.LineRule.Value)
+			if (space.LineRule.Value == LineSpacingRuleValues.AtLeast) // interpreted as twip
+			{			
+				var spacePoint = Converter.TwipToPoint(space.Line?.Value ?? "");
+				if (spacePoint >= paragraphFontSize * wordDefaultLineSpacing)
+					linespacing = spacePoint;
+				else
+					linespacing = wordDefaultLineSpacing * paragraphFontSize;
+			}
+			else if (space.LineRule.Value == LineSpacingRuleValues.Exact) // interpreted as twip
 			{
-				case LineSpacingRuleValues.AtLeast: // interpreted as twip				
-					var spacePoint = Converter.TwipToPoint(space.Line?.Value ?? "");
-					if (spacePoint >= paragraphFontSize * wordDefaultLineSpacing)
-						linespacing = spacePoint;
-					else
-						linespacing = wordDefaultLineSpacing * paragraphFontSize;
-					break;
-				case LineSpacingRuleValues.Exact: // interpreted as twip
-					linespacing = Converter.TwipToPoint(space.Line?.Value ?? "");
-					break;
-				case LineSpacingRuleValues.Auto: // interpreted as 240th of a line
-					linespacing = Convert.ToSingle(space.Line.Value, CultureInfo.InvariantCulture) / 240 * paragraphFontSize * wordDefaultLineSpacing;
-					break;
+				linespacing = Converter.TwipToPoint(space.Line?.Value ?? "");
+			}
+			else if (space.LineRule.Value == LineSpacingRuleValues.Auto) // interpreted as 240th of a line
+			{
+				linespacing = Convert.ToSingle(space.Line.Value, CultureInfo.InvariantCulture) / 240 * paragraphFontSize * wordDefaultLineSpacing;
 			}
 		}
 
@@ -195,23 +195,22 @@ public partial class DocxToPdf : DocxToReportConverter
 		// Horizontal Justification
 		var jc = paragraph.GetEffectiveElement<Justification>();
 		if (jc?.Val == null) return;
-		switch (jc.Val.Value)
+		if (jc.Val.Value == JustificationValues.Center)
 		{
-			case JustificationValues.Center:
-				pg.Alignment = Text.Element.ALIGN_CENTER;
-				break;
-			case JustificationValues.Left:
-				pg.Alignment = Text.Element.ALIGN_LEFT;
-				break;
-			case JustificationValues.Right:
-				pg.Alignment = Text.Element.ALIGN_RIGHT;
-				break;
-			case JustificationValues.Both
-				: // justify text between both margins equally, but inter-character spacing is not affected.
-			case JustificationValues.Distribute
-				: // justify text between both margins equally, and both inter-word and inter-character spacing are affected. iTextSharp doesnt support this.
-				pg.Alignment = Text.Element.ALIGN_JUSTIFIED;
-				break;
+			pg.Alignment = Text.Element.ALIGN_CENTER;
+		}
+		else if (jc.Val.Value == JustificationValues.Left)
+		{
+			pg.Alignment = Text.Element.ALIGN_LEFT;
+		}
+		else if (jc.Val.Value == JustificationValues.Right)
+		{
+			pg.Alignment = Text.Element.ALIGN_RIGHT;
+		}	
+		else if (jc.Val.Value == JustificationValues.Both|| jc.Val.Value == JustificationValues.Distribute)
+		{
+			// justify text between both margins equally, and both inter-word and inter-character spacing are affected. iTextSharp doesnt support this.
+			pg.Alignment = Text.Element.ALIGN_JUSTIFIED;
 		}
 	}
 
@@ -513,14 +512,18 @@ public partial class DocxToPdf : DocxToReportConverter
 		for (var i = 0; i < current.Count; i++)
 		{
 			var replacePattern = $"%{i + 1}";
-			var str = numFmt.Val.Value switch
-			{
-				NumberFormatValues.TaiwaneseCountingThousand => Tools.IntToTaiwanese(current[i]),
-				NumberFormatValues.LowerRoman => Tools.IntToRoman(current[i], false),
-				NumberFormatValues.UpperRoman => Tools.IntToRoman(current[i], true),
-				NumberFormatValues.DecimalZero => $"0{current[i]}",
-				_ => current[i].ToString(CultureInfo.InvariantCulture)
-			};
+			string? str;
+			if (numFmt.Val.Value == NumberFormatValues.TaiwaneseCountingThousand)
+				str = Tools.IntToTaiwanese(current[i]);
+			else if (numFmt.Val.Value == NumberFormatValues.LowerRoman)
+				str = Tools.IntToRoman(current[i], false);
+			else if (numFmt.Val.Value == NumberFormatValues.UpperRoman)
+				str = Tools.IntToRoman(current[i], true);
+			else if (numFmt.Val.Value == NumberFormatValues.DecimalZero)
+				str = $"0{current[i]}";
+			else
+				str = current[i].ToString(CultureInfo.InvariantCulture);
+
 			text = text.Replace(replacePattern, str);
 		}
 
@@ -858,13 +861,14 @@ public partial class DocxToPdf : DocxToReportConverter
 				var va = c.GetEffectiveElement<TableCellVerticalAlignment>();
 				if (va?.Val != null)
 				{
-					cell.VerticalAlignment = va.Val.Value switch
-					{
-						TableVerticalAlignmentValues.Top => Text.Element.ALIGN_TOP,
-						TableVerticalAlignmentValues.Bottom => Text.Element.ALIGN_BOTTOM,
-						TableVerticalAlignmentValues.Center => Text.Element.ALIGN_MIDDLE,
-						_ => cell.VerticalAlignment
-					};
+					if (va.Val.Value == TableVerticalAlignmentValues.Top)
+						cell.VerticalAlignment = Text.Element.ALIGN_TOP;
+					else if (va.Val.Value == TableVerticalAlignmentValues.Bottom)
+						cell.VerticalAlignment = Text.Element.ALIGN_BOTTOM;
+					else if (va.Val.Value == TableVerticalAlignmentValues.Center)
+						cell.VerticalAlignment = Text.Element.ALIGN_MIDDLE;
+					else
+						cell.VerticalAlignment = cell.VerticalAlignment;
 				}
 
 				TableBuilder.BuildTableCellBorder(cellHelper, cell, topPadding, bottomPadding);

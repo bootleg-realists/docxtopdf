@@ -80,8 +80,7 @@ public static class FontCreator
 	}
 
 	/// <summary>
-	/// Get font name from RunFonts, only from w:ascii(Theme)/w:hAnsi(Theme)/w:cs(Theme)/w:eastAsia(Theme) but not from
-	/// w:hint.
+	/// Get font name from RunFonts, only from w:ascii(Theme)/w:hAnsi(Theme)/w:cs(Theme)/w:eastAsia(Theme) but not from w:hint.
 	/// </summary>
 	/// <param name="runFonts">Wordprocessing.RunFonts object.</param>
 	/// <param name="fontType">FontTypeInfo object.</param>

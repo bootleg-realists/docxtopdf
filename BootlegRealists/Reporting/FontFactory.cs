@@ -1,11 +1,9 @@
-using System.Drawing.Text;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using DocumentFormat.OpenXml.Wordprocessing;
 using BootlegRealists.Reporting.Enumeration;
 using Typography.OpenFont;
 using Typography.OpenFont.Extensions;
-using FontFamily = System.Drawing.FontFamily;
 using Pdf = iTextSharp.text.pdf;
 using Text = iTextSharp.text;
 
@@ -83,26 +81,36 @@ public static class FontFactory
 	static (string, FontStyle) GetFontProperties(string fileName)
 	{
 		var fontStyle = FontStyle.Unknown;
-		using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 		try
 		{
-			var reader = new OpenFontReader();
-			var typeface = reader.Read(fs);
-			fontStyle = (FontStyle)typeface.TranslateOS2FontStyle();
+			using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+			try
+			{
+				var reader = new OpenFontReader();
+				var typeface = reader.Read(fs);
+				if (typeface == null)
+					return ("", fontStyle);
+				TranslatedOS2FontStyle x = typeface.TranslateOS2FontStyle();
+				fontStyle = (FontStyle)x;
+				return (typeface.Name, fontStyle);
+			}
+			catch (NullReferenceException)
+			{
+			}
+			catch (NotSupportedException)
+			{
+			}
+			catch (NotImplementedException)
+			{
+			}
+			catch (Exception)
+			{
+			}
 		}
-		catch (NullReferenceException)
+		catch (Exception)
 		{
 		}
-		catch (NotSupportedException)
-		{
-		}
-		catch (NotImplementedException)
-		{
-		}
-
-		var collection = new PrivateFontCollection();
-		collection.AddFontFile(fileName);
-		return (collection.Families.Length > 0 ? collection.Families[0].GetName(0x0409) : "", fontStyle);
+		return ("", fontStyle);
 	}
 
 	/// <summary>
@@ -119,17 +127,14 @@ public static class FontFactory
 
 		try
 		{
-			var fontFamily = new FontFamily(name);
-			var enName = fontFamily.GetName(0x0409);
-
 			// Exact math
 			var fontInfo = Fonts.Find(x =>
-				string.Equals(x.Name, enName, StringComparison.OrdinalIgnoreCase) &&
+				string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase) &&
 				(x.FontStyle & FontStyle.Bold) != 0 == bold && (x.FontStyle & FontStyle.Italic) != 0 == italic);
 			if (fontInfo != default)
 				return (fontInfo.Path, true);
 			// First match
-			fontInfo = Fonts.Find(x => string.Equals(x.Name, enName, StringComparison.OrdinalIgnoreCase));
+			fontInfo = Fonts.Find(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase));
 			if (fontInfo != default)
 				return (fontInfo.Path, false);
 		}

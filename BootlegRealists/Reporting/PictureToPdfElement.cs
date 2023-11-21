@@ -1,10 +1,10 @@
-using System.Drawing.Imaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using iTextSharp.text;
 using BootlegRealists.Reporting.Extension;
+using SkiaSharp;
 
 namespace BootlegRealists.Reporting;
 
@@ -34,7 +34,7 @@ public class PictureToPdfElement : XmlToPdfElement<Picture>
 			if (bImg == null)
 				continue;
 
-			ret = Image.GetInstance(bImg, ImageFormat.Png);
+			ret = Image.GetInstance(SKBitmap.Decode(bImg), SKEncodedImageFormat.Png);
 			break;
 		}
 

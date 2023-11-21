@@ -1,4 +1,3 @@
-using System.Drawing.Imaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Drawing.Wordprocessing;
@@ -6,6 +5,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using iTextSharp.text;
 using BootlegRealists.Reporting.Extension;
+using SkiaSharp;
 
 namespace BootlegRealists.Reporting;
 
@@ -27,7 +27,9 @@ public class DrawingToPdfElement : XmlToPdfElement<Drawing>
 
 		var bImg = SourceDocument.MainDocumentPart?.GetImageById(imageId);
 		if (bImg == null) return new List<IElement>();
-		var ret = Image.GetInstance(bImg, ImageFormat.Png);
+
+		using var skBitmap = SKBitmap.Decode(bImg);
+		var ret = Image.GetInstance(skBitmap, SKEncodedImageFormat.Png);
 		var extend = element.Descendants<Extent>().FirstOrDefault();
 		if (extend == null) return new List<IElement>();
 		const float inchIsEmu = 914400.0f;
