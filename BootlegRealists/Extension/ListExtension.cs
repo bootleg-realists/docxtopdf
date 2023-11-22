@@ -3,7 +3,7 @@ namespace BootlegRealists.Reporting.Extension;
 /// <summary>
 /// This class contains IList extension methods.
 /// </summary>
-public static class IListExtension
+public static class ListExtension
 {
     /// <summary>Adds an object to the end of the list (if it is not null).</summary>
     /// <param name="obj">The instance to act on.</param>
