@@ -26,7 +26,4 @@
 		<PackageReference Include="SkiaSharp" Version="2.88.6" />
         <PackageReference Include="WycliffeAssociates.Typography.OpenFont" Version="1.0.0"/>
     </ItemGroup>
-    <ItemGroup>
-        <Content Include="libgdiplus.dylib" PackagePath="runtimes/osx-arm64/native/"/>
-    </ItemGroup>
 </Project>

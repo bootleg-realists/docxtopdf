@@ -7,7 +7,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/SampleApp/bin/Debug/net8.0/SampleApp.dll",
-            "args": ["./Document.docx", "./Document.pdf"],
+            "args": ["./RtfTestDocument.docx", "./RtfTestDocument.pdf"],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "stopAtEntry": false

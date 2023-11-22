@@ -67,7 +67,7 @@ public class SpaceChunk : Chunk
         /// </summary>
         /// <param name="separator">the drawInterface to use to draw the tab.</param>
         /// <param name="tabPosition">an X coordinate that will be used as start position for the next Chunk.</param>
-        /// <param name="newline"if true, a newline will be added if the tabPosition has already been reached.></param>
+        /// <param name="newline">if true, a newline will be added if the tabPosition has already been reached.</param>
 		public SpaceChunk(IDrawInterface separator, float tabPosition, bool newline): base(separator, tabPosition, newline) {}
         /// <summary>
         /// Constructs a chunk containing an Image.

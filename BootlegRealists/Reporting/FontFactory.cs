@@ -81,31 +81,24 @@ public static class FontFactory
 	static (string, FontStyle) GetFontProperties(string fileName)
 	{
 		var fontStyle = FontStyle.Unknown;
+		using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 		try
 		{
-			using var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-			try
-			{
-				var reader = new OpenFontReader();
-				var typeface = reader.Read(fs);
-				if (typeface == null)
-					return ("", fontStyle);
-				TranslatedOS2FontStyle x = typeface.TranslateOS2FontStyle();
-				fontStyle = (FontStyle)x;
-				return (typeface.Name, fontStyle);
-			}
-			catch (NullReferenceException)
-			{
-			}
-			catch (NotSupportedException)
-			{
-			}
-			catch (NotImplementedException)
-			{
-			}
-			catch (Exception)
-			{
-			}
+			var reader = new OpenFontReader();
+			var typeface = reader.Read(fs);
+			if (typeface == null)
+				return ("", fontStyle);
+			fontStyle = (FontStyle)typeface.TranslateOS2FontStyle();
+			return (typeface.Name, fontStyle);
+		}
+		catch (NullReferenceException)
+		{
+		}
+		catch (NotSupportedException)
+		{
+		}
+		catch (NotImplementedException)
+		{
 		}
 		catch (Exception)
 		{

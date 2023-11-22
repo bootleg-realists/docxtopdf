@@ -30,8 +30,8 @@ internal class UnicodeBlockRange
 
 	public UnicodeBlockRange(int begin, int end)
 	{
-		this.Begin = begin;
-		this.End = end;
+		Begin = begin;
+		End = end;
 	}
 }
 

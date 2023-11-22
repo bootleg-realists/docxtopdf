@@ -3,7 +3,6 @@ using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using BootlegRealists.Reporting.Enumeration;
-using Color = System.Drawing.Color;
 
 // TODO: handle sectPr w:docGrid w:linePitch (how many lines per page)
 // TODO: handle tblLook $17.7.6 (conditional formatting), it will define firstrow/firstcolum/...etc styles in styles.xml

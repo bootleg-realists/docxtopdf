@@ -164,7 +164,7 @@ public static class TableBuilder
 		// Border
 		//  top border
 		BorderType? br = cellHelper.Borders?.TopBorder;
-		if (br?.Val == null || (br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None))
+		if (br?.Val == null || br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None)
 		{
 			cell.Border &= ~Text.Rectangle.TOP_BORDER;
 		}
@@ -178,7 +178,7 @@ public static class TableBuilder
 
 		//  bottom border
 		br = cellHelper.Borders?.BottomBorder;
-		if (br?.Val == null || (br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None))
+		if (br?.Val == null || br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None)
 		{
 			cell.Border &= ~Text.Rectangle.BOTTOM_BORDER;
 		}
@@ -193,7 +193,7 @@ public static class TableBuilder
 
 		//  left border
 		br = cellHelper.Borders?.LeftBorder;
-		if (br?.Val == null || (br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None))
+		if (br?.Val == null || br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None)
 		{
 			cell.Border &= ~Text.Rectangle.LEFT_BORDER;
 		}
@@ -208,7 +208,7 @@ public static class TableBuilder
 
 		//  right border
 		br = cellHelper.Borders?.RightBorder;
-		if (br?.Val == null || (br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None))
+		if (br?.Val == null || br.Val.Value == BorderValues.Nil || br.Val.Value == BorderValues.None)
 		{
 			cell.Border &= ~Text.Rectangle.RIGHT_BORDER;
 		}

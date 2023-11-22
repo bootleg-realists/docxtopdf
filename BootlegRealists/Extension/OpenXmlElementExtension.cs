@@ -132,7 +132,7 @@ public static class OpenXmlElementExtension
 			}
 		}
 
-		if (obj.Parent is Paragraph { ParagraphProperties.ParagraphStyleId: { } } paragraph) // parent paragraph's pStyle
+		if (obj.Parent is Paragraph { ParagraphProperties.ParagraphStyleId: not null } paragraph) // parent paragraph's pStyle
 		{
 			result = GetEffectiveElementStyle<T>(paragraph.ParagraphProperties.ParagraphStyleId.GetStyleById());
 			list.AddNotNull(result);

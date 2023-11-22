@@ -316,7 +316,7 @@ public partial class DocxToPdf : DocxToReportConverter
 		}
 		else if (ind.HangingChars?.HasValue == true)
 		{
-			var firstChunk = pg.Count > 0 ? pg.Chunks[0] as Text.Chunk : null;
+			var firstChunk = pg.Count > 0 ? pg.Chunks[0] : null;
 			hanging = Converter.HundredthOfCharacterToPoint(ind.HangingChars.Value,
 				firstChunk?.Font.CalculatedSize ?? 0.0f);
 		}
@@ -331,7 +331,7 @@ public partial class DocxToPdf : DocxToReportConverter
 			}
 			else if (ind.FirstLineChars?.HasValue == true)
 			{
-				var firstChunk = pg.Count > 0 ? pg.Chunks[0] as Text.Chunk : null;
+				var firstChunk = pg.Count > 0 ? pg.Chunks[0] : null;
 				firstline = Converter.HundredthOfCharacterToPoint(ind.FirstLineChars.Value,
 					firstChunk?.Font.CalculatedSize ?? 0.0f);
 			}
@@ -442,6 +442,27 @@ public partial class DocxToPdf : DocxToReportConverter
 		if (baseFont == null && paragraph.ParagraphProperties?.ParagraphStyleId != null)
 		{
 			var style = paragraph.ParagraphProperties?.ParagraphStyleId.GetStyleById()!;
+			var bulletRunFonts2 = style.GetEffectiveElement<RunFonts>();
+			if (bulletRunFonts2 != null)
+			{
+				baseFont = FontCreator.GetBaseFontByFontName(docxDocument, 
+					FontCreator.GetFontNameFromRunFontsByFontType(bulletRunFonts2, fontType),
+					false,
+					false,
+					fontType,
+					paragraph.GetEffectiveElement<Languages>());
+				if (fontType.FontType == FontTypeEnum.ComplexScript)
+					fscs = paragraph.GetEffectiveElement<FontSizeComplexScript>();
+				else
+					fs = paragraph.GetEffectiveElement<FontSize>();
+			}
+		}
+
+		// Doc StyleId
+		if (baseFont == null)
+		{
+			var style = docxDocument.MainDocumentPart?.GetDefaultStyle(DefaultStyleType.Paragraph);
+			if (style == null) return null;
 			var bulletRunFonts2 = style.GetEffectiveElement<RunFonts>();
 			if (bulletRunFonts2 != null)
 			{
