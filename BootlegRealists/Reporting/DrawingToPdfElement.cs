@@ -29,6 +29,7 @@ public class DrawingToPdfElement : XmlToPdfElement<Drawing>
 		if (bImg == null) return new List<IElement>();
 
 		using var skBitmap = SKBitmap.Decode(bImg);
+		if (skBitmap == null) return new List<IElement>();
 		var ret = Image.GetInstance(skBitmap, SKEncodedImageFormat.Png);
 		var extend = element.Descendants<Extent>().FirstOrDefault();
 		if (extend == null) return new List<IElement>();
